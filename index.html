@@ -17,8 +17,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <script type="text/babel">
-        const { useState } = React;
-        const { Calculator, DollarSign, TrendingUp, Info, Download, Zap } = lucide;
+        const { useState, useEffect } = React;
 
         function CalculadoraPrecoInfoproduto() {
           const [custoProducao, setCustoProducao] = useState(500);
@@ -26,6 +25,13 @@
           const [valorHora, setValorHora] = useState(50);
           const [margemLucro, setMargemLucro] = useState(70);
           const [plataforma, setPlataforma] = useState('kiwify');
+
+          // Dica técnica aplicada: Garante que os ícones carreguem sempre que houver interação
+          useEffect(() => {
+            if (window.lucide) {
+              window.lucide.createIcons();
+            }
+          }, [plataforma, margemLucro, custoProducao, horasTrabalhadas, valorHora]);
 
           const taxasPlataforma = {
             kiwify: { taxa: 4.99, nome: 'Kiwify' },
@@ -98,11 +104,7 @@
                           value={custoProducao}
                           onChange={(e) => setCustoProducao(Number(e.target.value))}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="500"
                         />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Ferramentas, softwares, designer, editor, etc.
-                        </p>
                       </div>
 
                       <div>
@@ -114,7 +116,6 @@
                           value={horasTrabalhadas}
                           onChange={(e) => setHorasTrabalhadas(Number(e.target.value))}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="40"
                         />
                       </div>
 
@@ -127,11 +128,7 @@
                           value={valorHora}
                           onChange={(e) => setValorHora(Number(e.target.value))}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="50"
                         />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Seu valor/hora como profissional
-                        </p>
                       </div>
 
                       <div>
@@ -144,12 +141,8 @@
                           max="90"
                           value={margemLucro}
                           onChange={(e) => setMargemLucro(Number(e.target.value))}
-                          className="w-full"
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                         />
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>30%</span>
-                          <span>90%</span>
-                        </div>
                       </div>
 
                       <div>
@@ -219,11 +212,10 @@
                       </h2>
                       
                       <div className="space-y-3">
-                        <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
+                        <div className="border-2 border-gray-200 rounded-lg p-4">
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="font-bold text-gray-800">🥉 Oferta Básica</p>
-                              <p className="text-xs text-gray-500">Conteúdo essencial</p>
                             </div>
                             <p className="text-2xl font-bold text-indigo-600">
                               R$ {tiers.basico.toFixed(2)}
@@ -235,7 +227,6 @@
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="font-bold text-indigo-800">⭐ Oferta Premium</p>
-                              <p className="text-xs text-indigo-600">Mais vendida</p>
                             </div>
                             <p className="text-2xl font-bold text-indigo-600">
                               R$ {tiers.premium.toFixed(2)}
@@ -243,11 +234,10 @@
                           </div>
                         </div>
 
-                        <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
+                        <div className="border-2 border-gray-200 rounded-lg p-4">
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="font-bold text-gray-800">💎 Oferta VIP</p>
-                              <p className="text-xs text-gray-500">Exclusiva + bônus</p>
                             </div>
                             <p className="text-2xl font-bold text-indigo-600">
                               R$ {tiers.vip.toFixed(2)}
@@ -258,51 +248,22 @@
                     </div>
 
                     <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl p-6 text-white text-center">
-                      <h3 className="text-2xl font-bold mb-3">
-                        🚀 Pronto para Vender seu Infoproduto?
-                      </h3>
-                      <p className="mb-4 opacity-90">
-                        Baixe o Kit Completo com templates de página de vendas, copy persuasiva e checklist de lançamento
-                      </p>
-                      <button className="bg-white text-purple-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center gap-2 mx-auto">
+                      <h3 className="text-2xl font-bold mb-3">🚀 Pronto para Vender?</h3>
+                      <button className="bg-white text-purple-600 font-bold py-3 px-8 rounded-full flex items-center gap-2 mx-auto">
                         <i data-lucide="download" className="w-5 h-5"></i>
                         Baixar Kit Gratuito
                       </button>
-                      <p className="text-xs mt-3 opacity-75">
-                        + de 5.000 produtores já baixaram
-                      </p>
                     </div>
 
                   </div>
-
                 </div>
-
-                <div className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-                  <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
-                    <i data-lucide="info" className="w-5 h-5"></i>
-                    💡 Dicas de Precificação
-                  </h3>
-                  <ul className="grid md:grid-cols-2 gap-3 text-sm text-blue-900">
-                    <li>✅ Preços terminados em .97 convertem 23% mais</li>
-                    <li>✅ Ofereça 3 opções (aumenta ticket médio em 40%)</li>
-                    <li>✅ Kiwify tem menor taxa (economize na plataforma)</li>
-                    <li>✅ Teste A/B entre R$ X,97 e R$ X,90</li>
-                    <li>✅ Produtos acima de R$ 197 precisam de garantia</li>
-                    <li>✅ Bônus aumentam percepção de valor em 60%</li>
-                  </ul>
-                </div>
-
-                <div className="text-center mt-8 pb-8 text-gray-600 text-sm">
-                  <p>Criado para empreendedores digitais que querem vender mais 💰</p>
-                </div>
-
               </div>
             </div>
           );
         }
 
-        ReactDOM.render(<CalculadoraPrecoInfoproduto />, document.getElementById('root'));
-        lucide.createIcons();
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<CalculadoraPrecoInfoproduto />);
     </script>
 </body>
 </html>
