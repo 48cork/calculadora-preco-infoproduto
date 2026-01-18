@@ -1,0 +1,301 @@
+import React, { useState } from 'react';
+import { Calculator, DollarSign, TrendingUp, Info, Download, Zap } from 'lucide-react';
+
+export default function CalculadoraPrecoInfoproduto() {
+  const [custoProducao, setCustoProducao] = useState(500);
+  const [horasTrabalhadas, setHorasTrabalhadas] = useState(40);
+  const [valorHora, setValorHora] = useState(50);
+  const [margemLucro, setMargemLucro] = useState(70);
+  const [plataforma, setPlataforma] = useState('kiwify');
+
+  const taxasPlataforma = {
+    kiwify: { taxa: 4.99, nome: 'Kiwify' },
+    hotmart: { taxa: 9.9, nome: 'Hotmart' },
+    eduzz: { taxa: 8.49, nome: 'Eduzz' },
+    monetizze: { taxa: 9.9, nome: 'Monetizze' }
+  };
+
+  const calcularPreco = () => {
+    const custoTotal = custoProducao + (horasTrabalhadas * valorHora);
+    const taxaPlat = taxasPlataforma[plataforma].taxa;
+    
+    // Preço base considerando margem de lucro
+    const precoBase = custoTotal / (1 - (margemLucro / 100));
+    
+    // Preço final considerando taxa da plataforma
+    const precoFinal = precoBase / (1 - (taxaPlat / 100));
+    
+    return Math.round(precoFinal);
+  };
+
+  const precoCalculado = calcularPreco();
+  const precoPsicologico97 = Math.floor(precoCalculado / 10) * 10 - 0.03;
+  const precoPsicologico90 = Math.floor(precoCalculado / 10) * 10 - 0.10;
+  
+  const lucroLiquido = precoCalculado - (custoProducao + (horasTrabalhadas * valorHora)) - (precoCalculado * taxasPlataforma[plataforma].taxa / 100);
+  const margemReal = (lucroLiquido / precoCalculado) * 100;
+
+  const sugerirTiers = () => {
+    const basico = Math.round(precoCalculado * 0.6);
+    const premium = precoCalculado;
+    const vip = Math.round(precoCalculado * 1.8);
+    
+    return {
+      basico: Math.floor(basico / 10) * 10 - 0.03,
+      premium: Math.floor(premium / 10) * 10 - 0.03,
+      vip: Math.floor(vip / 10) * 10 - 0.03
+    };
+  };
+
+  const tiers = sugerirTiers();
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Header */}
+        <div className="text-center mb-8 pt-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Calculator className="w-12 h-12 text-indigo-600" />
+            <h1 className="text-4xl font-bold text-gray-800">
+              Calculadora de Preço de Infoproduto
+            </h1>
+          </div>
+          <p className="text-gray-600 text-lg">
+            Descubra o preço ideal para seu curso, e-book ou mentoria em 30 segundos
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          
+          {/* Formulário */}
+          <div className="bg-white rounded-2xl shadow-xl p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <DollarSign className="w-6 h-6 text-green-600" />
+              Seus Custos
+            </h2>
+
+            <div className="space-y-6">
+              
+              {/* Custo de Produção */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  💰 Custo de Produção (R$)
+                </label>
+                <input
+                  type="number"
+                  value={custoProducao}
+                  onChange={(e) => setCustoProducao(Number(e.target.value))}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
+                  placeholder="500"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Ferramentas, softwares, designer, editor, etc.
+                </p>
+              </div>
+
+              {/* Horas Trabalhadas */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  ⏰ Horas Trabalhadas
+                </label>
+                <input
+                  type="number"
+                  value={horasTrabalhadas}
+                  onChange={(e) => setHorasTrabalhadas(Number(e.target.value))}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
+                  placeholder="40"
+                />
+              </div>
+
+              {/* Valor da Hora */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  💵 Quanto vale sua hora? (R$)
+                </label>
+                <input
+                  type="number"
+                  value={valorHora}
+                  onChange={(e) => setValorHora(Number(e.target.value))}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
+                  placeholder="50"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Seu valor/hora como profissional
+                </p>
+              </div>
+
+              {/* Margem de Lucro */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  📈 Margem de Lucro Desejada ({margemLucro}%)
+                </label>
+                <input
+                  type="range"
+                  min="30"
+                  max="90"
+                  value={margemLucro}
+                  onChange={(e) => setMargemLucro(Number(e.target.value))}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>30%</span>
+                  <span>90%</span>
+                </div>
+              </div>
+
+              {/* Plataforma */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  🏪 Plataforma de Venda
+                </label>
+                <select
+                  value={plataforma}
+                  onChange={(e) => setPlataforma(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
+                >
+                  <option value="kiwify">Kiwify (4.99% de taxa)</option>
+                  <option value="hotmart">Hotmart (9.9% de taxa)</option>
+                  <option value="eduzz">Eduzz (8.49% de taxa)</option>
+                  <option value="monetizze">Monetizze (9.9% de taxa)</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Resultados */}
+          <div className="space-y-6">
+            
+            {/* Preço Recomendado */}
+            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-xl p-6 text-white">
+              <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Preço Recomendado
+              </h2>
+              
+              <div className="text-center mb-6">
+                <p className="text-sm opacity-90 mb-2">Preço calculado:</p>
+                <p className="text-5xl font-bold mb-4">
+                  R$ {precoCalculado.toFixed(2)}
+                </p>
+                
+                <div className="bg-white/20 rounded-lg p-4">
+                  <p className="text-sm mb-2">🎯 Preços Psicológicos:</p>
+                  <div className="flex justify-around">
+                    <div>
+                      <p className="text-3xl font-bold">R$ {precoPsicologico97.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">Mais vendas</p>
+                    </div>
+                    <div>
+                      <p className="text-3xl font-bold">R$ {precoPsicologico90.toFixed(2)}</p>
+                      <p className="text-xs opacity-80">Mais premium</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white/20 rounded-lg p-3">
+                  <p className="opacity-80">Lucro Líquido:</p>
+                  <p className="text-xl font-bold">R$ {lucroLiquido.toFixed(2)}</p>
+                </div>
+                <div className="bg-white/20 rounded-lg p-3">
+                  <p className="opacity-80">Margem Real:</p>
+                  <p className="text-xl font-bold">{margemReal.toFixed(1)}%</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Estratégia de Tiers */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Zap className="w-6 h-6 text-yellow-500" />
+                Estratégia de 3 Ofertas
+              </h2>
+              
+              <div className="space-y-3">
+                <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-gray-800">🥉 Oferta Básica</p>
+                      <p className="text-xs text-gray-500">Conteúdo essencial</p>
+                    </div>
+                    <p className="text-2xl font-bold text-indigo-600">
+                      R$ {tiers.basico.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-2 border-indigo-500 bg-indigo-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-indigo-800">⭐ Oferta Premium</p>
+                      <p className="text-xs text-indigo-600">Mais vendida</p>
+                    </div>
+                    <p className="text-2xl font-bold text-indigo-600">
+                      R$ {tiers.premium.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-gray-800">💎 Oferta VIP</p>
+                      <p className="text-xs text-gray-500">Exclusiva + bônus</p>
+                    </div>
+                    <p className="text-2xl font-bold text-indigo-600">
+                      R$ {tiers.vip.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl p-6 text-white text-center">
+              <h3 className="text-2xl font-bold mb-3">
+                🚀 Pronto para Vender seu Infoproduto?
+              </h3>
+              <p className="mb-4 opacity-90">
+                Baixe o Kit Completo com templates de página de vendas, copy persuasiva e checklist de lançamento
+              </p>
+              <button className="bg-white text-purple-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center gap-2 mx-auto">
+                <Download className="w-5 h-5" />
+                Baixar Kit Gratuito
+              </button>
+              <p className="text-xs mt-3 opacity-75">
+                + de 5.000 produtores já baixaram
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Dicas */}
+        <div className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+          <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+            <Info className="w-5 h-5" />
+            💡 Dicas de Precificação
+          </h3>
+          <ul className="grid md:grid-cols-2 gap-3 text-sm text-blue-900">
+            <li>✅ Preços terminados em .97 convertem 23% mais</li>
+            <li>✅ Ofereça 3 opções (aumenta ticket médio em 40%)</li>
+            <li>✅ Kiwify tem menor taxa (economize na plataforma)</li>
+            <li>✅ Teste A/B entre R$ X,97 e R$ X,90</li>
+            <li>✅ Produtos acima de R$ 197 precisam de garantia</li>
+            <li>✅ Bônus aumentam percepção de valor em 60%</li>
+          </ul>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8 pb-8 text-gray-600 text-sm">
+          <p>Criado para empreendedores digitais que querem vender mais 💰</p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
