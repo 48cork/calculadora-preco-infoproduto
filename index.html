@@ -63,30 +63,27 @@
 
           // FUNÇÃO DE ALAVANCAGEM EXTREMA - CONEXÃO COM O CÉREBRO IA
           const enviarDadosParaIA = async () => {
-            const webhookUrl = "SUA_URL_DO_MAKE_AQUI"; // <--- INSIRA SEU LINK DO MAKE AQUI
+            const webhookUrl = "https://hook.us2.make.com/nrcbvbhjuzn29jft5ga6paguhaw7jlrs";
             
-            if(webhookUrl === "SUA_URL_DO_MAKE_AQUI") {
-                alert("Erro Técnico: O link do Webhook não foi configurado.");
-                return;
-            }
-
             setLoading(true);
 
             const payload = {
-                data: new Date().toISOString(),
-                projeto: "MTRIC - Calculadora de Preço",
-                autor: "Sergio Farias",
-                lead: {
-                    custo_producao: custoProducao,
-                    horas: horasTrabalhadas,
-                    valor_hora: valorHora,
-                    margem_alvo: margemLucro,
-                    plataforma_escolhida: plataforma
+                data_envio: new Date().toLocaleString('pt-BR'),
+                origem: "MTRIC - Calculadora de Preço",
+                estrategista: "Sergio Farias",
+                inputs_usuario: {
+                    custo_fixo_producao: custoProducao,
+                    tempo_investido_horas: horasTrabalhadas,
+                    valor_da_hora_especialista: valorHora,
+                    margem_lucro_alvo: margemLucro,
+                    plataforma_vendas: plataforma
                 },
-                resultados: {
-                    preco_sugerido: precoCalculado,
-                    lucro_liquido: lucroLiquido.toFixed(2),
-                    margem_real: margemReal.toFixed(2)
+                metricas_calculadas: {
+                    preco_sugerido_final: precoCalculado,
+                    lucro_liquido_real: lucroLiquido.toFixed(2),
+                    margem_liquida_final: margemReal.toFixed(2) + "%",
+                    psicologico_97: precoPsicologico97.toFixed(2),
+                    psicologico_90: precoPsicologico90.toFixed(2)
                 }
             };
 
@@ -98,65 +95,67 @@
               });
               
               if(response.ok) {
-                  alert('🚀 Diagnóstico Processado! Em instantes você receberá a análise estratégica no seu WhatsApp.');
+                  alert('🚀 Diagnóstico Gerado! O MTRIC enviou seus dados para análise. Verifique seu fluxo de resposta em instantes.');
               }
             } catch (error) {
-              console.error('Falha na sinapse:', error);
-              alert('Erro ao conectar com a IA. Verifique sua conexão.');
+              console.error('Erro na automação:', error);
+              alert('Erro de conexão com o servidor de IA.');
             } finally {
               setLoading(false);
             }
           };
 
           return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black p-4 text-gray-100 font-sans">
               <div className="max-w-6xl mx-auto">
                 
-                <div className="text-center mb-8 pt-8">
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-6xl">🧮</span>
-                    <h1 className="text-4xl font-bold text-gray-800">
-                      MTRIC: Calculadora de Preço
+                <div className="text-center mb-10 pt-8">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-500/50">
+                        <span className="text-4xl">📊</span>
+                    </div>
+                    <h1 className="text-4xl font-extrabold tracking-tight">
+                      MTRIC <span className="text-blue-500">Intelligence</span>
                     </h1>
                   </div>
-                  <p className="text-gray-600 text-lg">
-                    Engenharia financeira para precificação de infoprodutos em 2026
+                  <p className="text-blue-200 text-lg opacity-80">
+                    Sua precificação baseada em engenharia financeira, não em achismo.
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-8">
                   
-                  {/* COLUNA DE INPUTS */}
-                  <div className="bg-white rounded-2xl shadow-xl p-6">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                      <span className="text-3xl">💰</span>
-                      Variáveis de Custo
+                  {/* CONFIGURAÇÕES DE ENTRADA */}
+                  <div className="bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-3xl p-8 shadow-2xl">
+                    <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                      <span className="text-blue-500">01.</span> Configurar Variáveis
                     </h2>
 
                     <div className="space-y-6">
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">💵 Custo de Produção (R$)</label>
-                        <input type="number" value={custoProducao} onChange={(e) => setCustoProducao(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
+                      <div className="group">
+                        <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within:text-blue-400 transition-colors">💵 Custo de Produção (R$)</label>
+                        <input type="number" value={custoProducao} onChange={(e) => setCustoProducao(Number(e.target.value))} className="w-full bg-gray-900/50 border-2 border-gray-700 rounded-xl px-4 py-3 focus:border-blue-500 outline-none transition-all text-xl font-bold" />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">⏰ Horas Totais</label>
+                          <input type="number" value={horasTrabalhadas} onChange={(e) => setHorasTrabalhadas(Number(e.target.value))} className="w-full bg-gray-900/50 border-2 border-gray-700 rounded-xl px-4 py-3 focus:border-blue-500 outline-none text-xl font-bold" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-2">💰 Valor/Hora</label>
+                          <input type="number" value={valorHora} onChange={(e) => setValorHora(Number(e.target.value))} className="w-full bg-gray-900/50 border-2 border-gray-700 rounded-xl px-4 py-3 focus:border-blue-500 outline-none text-xl font-bold" />
+                        </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">⏰ Horas Trabalhadas</label>
-                        <input type="number" value={horasTrabalhadas} onChange={(e) => setHorasTrabalhadas(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
+                        <label className="block text-sm font-medium text-gray-400 mb-2">📈 Margem Desejada: <span className="text-blue-400">{margemLucro}%</span></label>
+                        <input type="range" min="30" max="90" value={margemLucro} onChange={(e) => setMargemLucro(Number(e.target.value))} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">💵 Valor da sua Hora (R$)</label>
-                        <input type="number" value={valorHora} onChange={(e) => setValorHora(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">📈 Margem de Lucro Desejada ({margemLucro}%)</label>
-                        <input type="range" min="30" max="90" value={margemLucro} onChange={(e) => setMargemLucro(Number(e.target.value))} className="w-full" />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">🏪 Plataforma</label>
-                        <select value={plataforma} onChange={(e) => setPlataforma(e.target.value)} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg">
+                        <label className="block text-sm font-medium text-gray-400 mb-2">🏪 Gateway de Pagamento</label>
+                        <select value={plataforma} onChange={(e) => setPlataforma(e.target.value)} className="w-full bg-gray-900/50 border-2 border-gray-700 rounded-xl px-4 py-3 focus:border-blue-500 outline-none text-lg font-semibold">
                           <option value="kiwify">Kiwify (4.99%)</option>
                           <option value="hotmart">Hotmart (9.9%)</option>
                           <option value="eduzz">Eduzz (8.49%)</option>
@@ -166,52 +165,72 @@
                     </div>
                   </div>
 
-                  {/* COLUNA DE RESULTADOS */}
+                  {/* RESULTADOS E CALL TO ACTION */}
                   <div className="space-y-6">
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-xl p-6 text-white text-center">
-                      <h2 className="text-xl font-bold mb-4">🎯 Preço Recomendado</h2>
-                      <p className="text-6xl font-bold mb-6">R$ {precoCalculado.toFixed(2)}</p>
+                    <div className="bg-blue-600 rounded-3xl p-8 shadow-xl shadow-blue-900/20 relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+                        <span className="text-9xl">💎</span>
+                      </div>
+                      <h2 className="text-xl font-bold text-blue-100 mb-2">Preço Final Recomendado</h2>
+                      <div className="text-6xl font-black mb-6">R$ {precoCalculado.toFixed(2)}</div>
                       
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div className="bg-white/20 rounded-lg p-3">
-                          <p className="opacity-80">Lucro Líquido:</p>
-                          <p className="text-xl font-bold">R$ {lucroLiquido.toFixed(2)}</p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+                          <p className="text-xs text-blue-200 uppercase font-bold tracking-wider mb-1">Lucro Líquido</p>
+                          <p className="text-2xl font-bold">R$ {lucroLiquido.toFixed(2)}</p>
                         </div>
-                        <div className="bg-white/20 rounded-lg p-3">
-                          <p className="opacity-80">Margem Real:</p>
-                          <p className="text-xl font-bold">{margemReal.toFixed(1)}%</p>
+                        <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+                          <p className="text-xs text-blue-200 uppercase font-bold tracking-wider mb-1">Margem Real</p>
+                          <p className="text-2xl font-bold">{margemReal.toFixed(1)}%</p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-2xl shadow-xl p-6">
-                      <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">⚡ Ofertas Estratégicas</h2>
+                    <div className="bg-gray-800/80 border border-gray-700 rounded-3xl p-6">
+                      <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span className="text-blue-500">🎯</span> Gatilhos Psicológicos
+                      </h3>
                       <div className="space-y-3">
-                        <div className="flex justify-between border-b pb-2"><span>🥉 Básica:</span><strong>R$ {tiers.basico.toFixed(2)}</strong></div>
-                        <div className="flex justify-between border-b pb-2 text-indigo-600 font-bold"><span>⭐ Premium:</span><strong>R$ {tiers.premium.toFixed(2)}</strong></div>
-                        <div className="flex justify-between"><span>💎 VIP:</span><strong>R$ {tiers.vip.toFixed(2)}</strong></div>
+                        <div className="flex justify-between items-center p-3 bg-gray-900/50 rounded-xl border border-gray-700">
+                            <span className="text-gray-400">Oferta de Volume (.97)</span>
+                            <span className="text-xl font-bold text-green-400">R$ {precoPsicologico97.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-900/50 rounded-xl border border-gray-700">
+                            <span className="text-gray-400">Oferta Premium (.90)</span>
+                            <span className="text-xl font-bold text-blue-400">R$ {precoPsicologico90.toFixed(2)}</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* BOTÃO DE CONVERSÃO - O GATILHO DO BILIONÁRIO */}
-                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white text-center">
-                      <h3 className="text-xl font-bold mb-4">Receber Auditoria Detalhada</h3>
-                      <p className="mb-6 opacity-90 text-sm">Nossa IA analisará seus custos e enviará um relatório de viabilidade para o seu WhatsApp em segundos.</p>
-                      
-                      <button 
-                        onClick={enviarDadosParaIA}
-                        disabled={loading}
-                        className={`w-full bg-white text-indigo-700 font-extrabold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3 cursor-pointer ${loading ? 'opacity-50' : ''}`}
-                      >
-                        {loading ? 'PROCESSANDO...' : '🚀 GERAR DIAGNÓSTICO IA'}
-                      </button>
+                    {/* CONVERSÃO HIGH TICKET - SERGIO FARIAS */}
+                    <div className="bg-gradient-to-r from-blue-700 to-indigo-800 rounded-3xl p-1 text-center shadow-2xl">
+                        <div className="bg-gray-900 rounded-[calc(1.5rem-1px)] p-8">
+                            <h3 className="text-xl font-bold mb-3">Auditoria de Viabilidade IA</h3>
+                            <p className="text-gray-400 text-sm mb-6">Receba uma análise completa dos seus números e descubra onde sua operação está perdendo margem.</p>
+                            
+                            <button 
+                                onClick={enviarDadosParaIA}
+                                disabled={loading}
+                                className={`w-full py-4 px-8 rounded-2xl font-black text-lg transition-all transform active:scale-95 flex items-center justify-center gap-3 ${loading ? 'bg-gray-700 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 cursor-pointer'}`}
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                                        PROCESSANDO...
+                                    </>
+                                ) : (
+                                    <>🚀 GERAR DIAGNÓSTICO AGORA</>
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                   </div>
                 </div>
 
-                <div className="text-center mt-12 pb-8 text-gray-500 text-sm">
-                  <p>MTRIC Ecosystem | Desenvolvido por <strong>Sergio Farias</strong></p>
+                <div className="text-center mt-12 pb-12 text-gray-600 border-t border-gray-800 pt-8">
+                  <p className="font-medium">MTRIC Ecosystem | Autoridade Técnica: <strong>Sergio Farias</strong></p>
+                  <p className="text-xs mt-2 opacity-50 tracking-widest">ARCHITECTURE AS MARKETING © 2026</p>
                 </div>
               </div>
             </div>
