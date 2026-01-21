@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preço de Infoproduto Grátis | Simulador de Viabilidade 2026</title>
+    <title>MTRIC | Calculadora de Preço de Infoproduto 2026</title>
     <meta name="description" content="Calcule o preço perfeito para seu curso online, e-book ou mentoria. Ferramenta 100% gratuita com estratégia de precificação psicológica.">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -23,6 +23,7 @@
           const [valorHora, setValorHora] = useState(50);
           const [margemLucro, setMargemLucro] = useState(70);
           const [plataforma, setPlataforma] = useState('kiwify');
+          const [loading, setLoading] = useState(false);
 
           const taxasPlataforma = {
             kiwify: { taxa: 4.99, nome: 'Kiwify' },
@@ -60,6 +61,53 @@
 
           const tiers = sugerirTiers();
 
+          // FUNÇÃO DE ALAVANCAGEM EXTREMA - CONEXÃO COM O CÉREBRO IA
+          const enviarDadosParaIA = async () => {
+            const webhookUrl = "SUA_URL_DO_MAKE_AQUI"; // <--- INSIRA SEU LINK DO MAKE AQUI
+            
+            if(webhookUrl === "SUA_URL_DO_MAKE_AQUI") {
+                alert("Erro Técnico: O link do Webhook não foi configurado.");
+                return;
+            }
+
+            setLoading(true);
+
+            const payload = {
+                data: new Date().toISOString(),
+                projeto: "MTRIC - Calculadora de Preço",
+                autor: "Sergio Farias",
+                lead: {
+                    custo_producao: custoProducao,
+                    horas: horasTrabalhadas,
+                    valor_hora: valorHora,
+                    margem_alvo: margemLucro,
+                    plataforma_escolhida: plataforma
+                },
+                resultados: {
+                    preco_sugerido: precoCalculado,
+                    lucro_liquido: lucroLiquido.toFixed(2),
+                    margem_real: margemReal.toFixed(2)
+                }
+            };
+
+            try {
+              const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+              
+              if(response.ok) {
+                  alert('🚀 Diagnóstico Processado! Em instantes você receberá a análise estratégica no seu WhatsApp.');
+              }
+            } catch (error) {
+              console.error('Falha na sinapse:', error);
+              alert('Erro ao conectar com a IA. Verifique sua conexão.');
+            } finally {
+              setLoading(false);
+            }
+          };
+
           return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
               <div className="max-w-6xl mx-auto">
@@ -68,135 +116,62 @@
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <span className="text-6xl">🧮</span>
                     <h1 className="text-4xl font-bold text-gray-800">
-                      Calculadora de Preço de Infoproduto
+                      MTRIC: Calculadora de Preço
                     </h1>
                   </div>
                   <p className="text-gray-600 text-lg">
-                    Descubra o preço ideal para seu curso, e-book ou mentoria em 30 segundos
+                    Engenharia financeira para precificação de infoprodutos em 2026
                   </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   
+                  {/* COLUNA DE INPUTS */}
                   <div className="bg-white rounded-2xl shadow-xl p-6">
                     <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                       <span className="text-3xl">💰</span>
-                      Seus Custos
+                      Variáveis de Custo
                     </h2>
 
                     <div className="space-y-6">
-                      
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          💵 Custo de Produção (R$)
-                        </label>
-                        <input
-                          type="number"
-                          value={custoProducao}
-                          onChange={(e) => setCustoProducao(Number(e.target.value))}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="500"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Ferramentas, softwares, designer, editor, etc.
-                        </p>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">💵 Custo de Produção (R$)</label>
+                        <input type="number" value={custoProducao} onChange={(e) => setCustoProducao(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          ⏰ Horas Trabalhadas
-                        </label>
-                        <input
-                          type="number"
-                          value={horasTrabalhadas}
-                          onChange={(e) => setHorasTrabalhadas(Number(e.target.value))}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="40"
-                        />
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">⏰ Horas Trabalhadas</label>
+                        <input type="number" value={horasTrabalhadas} onChange={(e) => setHorasTrabalhadas(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          💵 Quanto vale sua hora? (R$)
-                        </label>
-                        <input
-                          type="number"
-                          value={valorHora}
-                          onChange={(e) => setValorHora(Number(e.target.value))}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                          placeholder="50"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Seu valor/hora como profissional
-                        </p>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">💵 Valor da sua Hora (R$)</label>
+                        <input type="number" value={valorHora} onChange={(e) => setValorHora(Number(e.target.value))} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          📈 Margem de Lucro Desejada ({margemLucro}%)
-                        </label>
-                        <input
-                          type="range"
-                          min="30"
-                          max="90"
-                          value={margemLucro}
-                          onChange={(e) => setMargemLucro(Number(e.target.value))}
-                          className="w-full"
-                        />
-                        <div className="flex justify-between text-xs text-gray-500">
-                          <span>30%</span>
-                          <span>90%</span>
-                        </div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">📈 Margem de Lucro Desejada ({margemLucro}%)</label>
+                        <input type="range" min="30" max="90" value={margemLucro} onChange={(e) => setMargemLucro(Number(e.target.value))} className="w-full" />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          🏪 Plataforma de Venda
-                        </label>
-                        <select
-                          value={plataforma}
-                          onChange={(e) => setPlataforma(e.target.value)}
-                          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
-                        >
-                          <option value="kiwify">Kiwify (4.99% de taxa)</option>
-                          <option value="hotmart">Hotmart (9.9% de taxa)</option>
-                          <option value="eduzz">Eduzz (8.49% de taxa)</option>
-                          <option value="monetizze">Monetizze (9.9% de taxa)</option>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">🏪 Plataforma</label>
+                        <select value={plataforma} onChange={(e) => setPlataforma(e.target.value)} className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-lg">
+                          <option value="kiwify">Kiwify (4.99%)</option>
+                          <option value="hotmart">Hotmart (9.9%)</option>
+                          <option value="eduzz">Eduzz (8.49%)</option>
+                          <option value="monetizze">Monetizze (9.9%)</option>
                         </select>
                       </div>
-
                     </div>
                   </div>
 
+                  {/* COLUNA DE RESULTADOS */}
                   <div className="space-y-6">
-                    
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-xl p-6 text-white">
-                      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <span className="text-3xl">📊</span>
-                        Preço Recomendado
-                      </h2>
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-xl p-6 text-white text-center">
+                      <h2 className="text-xl font-bold mb-4">🎯 Preço Recomendado</h2>
+                      <p className="text-6xl font-bold mb-6">R$ {precoCalculado.toFixed(2)}</p>
                       
-                      <div className="text-center mb-6">
-                        <p className="text-sm opacity-90 mb-2">Preço calculado:</p>
-                        <p className="text-5xl font-bold mb-4">
-                          R$ {precoCalculado.toFixed(2)}
-                        </p>
-                        
-                        <div className="bg-white/20 rounded-lg p-4">
-                          <p className="text-sm mb-2">🎯 Preços Psicológicos:</p>
-                          <div className="flex justify-around">
-                            <div>
-                              <p className="text-3xl font-bold">R$ {precoPsicologico97.toFixed(2)}</p>
-                              <p className="text-xs opacity-80">Mais vendas</p>
-                            </div>
-                            <div>
-                              <p className="text-3xl font-bold">R$ {precoPsicologico90.toFixed(2)}</p>
-                              <p className="text-xs opacity-80">Mais premium</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div className="bg-white/20 rounded-lg p-3">
                           <p className="opacity-80">Lucro Líquido:</p>
@@ -210,93 +185,34 @@
                     </div>
 
                     <div className="bg-white rounded-2xl shadow-xl p-6">
-                      <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span className="text-3xl">⚡</span>
-                        Estratégia de 3 Ofertas
-                      </h2>
-                      
+                      <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">⚡ Ofertas Estratégicas</h2>
                       <div className="space-y-3">
-                        <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-bold text-gray-800">🥉 Oferta Básica</p>
-                              <p className="text-xs text-gray-500">Conteúdo essencial</p>
-                            </div>
-                            <p className="text-2xl font-bold text-indigo-600">
-                              R$ {tiers.basico.toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="border-2 border-indigo-500 bg-indigo-50 rounded-lg p-4">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-bold text-indigo-800">⭐ Oferta Premium</p>
-                              <p className="text-xs text-indigo-600">Mais vendida</p>
-                            </div>
-                            <p className="text-2xl font-bold text-indigo-600">
-                              R$ {tiers.premium.toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-500 transition-colors">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-bold text-gray-800">💎 Oferta VIP</p>
-                              <p className="text-xs text-gray-500">Exclusiva + bônus</p>
-                            </div>
-                            <p className="text-2xl font-bold text-indigo-600">
-                              R$ {tiers.vip.toFixed(2)}
-                            </p>
-                          </div>
-                        </div>
+                        <div className="flex justify-between border-b pb-2"><span>🥉 Básica:</span><strong>R$ {tiers.basico.toFixed(2)}</strong></div>
+                        <div className="flex justify-between border-b pb-2 text-indigo-600 font-bold"><span>⭐ Premium:</span><strong>R$ {tiers.premium.toFixed(2)}</strong></div>
+                        <div className="flex justify-between"><span>💎 VIP:</span><strong>R$ {tiers.vip.toFixed(2)}</strong></div>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-xl p-6 text-white text-center">
-                      <h3 className="text-2xl font-bold mb-3">
-                        🚀 Pronto para Vender seu Infoproduto?
-                      </h3>
-                      <p className="mb-4 opacity-90">
-                        Baixe o Kit Completo com templates de página de vendas, copy persuasiva e checklist de lançamento
-                      </p>
+                    {/* BOTÃO DE CONVERSÃO - O GATILHO DO BILIONÁRIO */}
+                    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-xl p-8 text-white text-center">
+                      <h3 className="text-xl font-bold mb-4">Receber Auditoria Detalhada</h3>
+                      <p className="mb-6 opacity-90 text-sm">Nossa IA analisará seus custos e enviará um relatório de viabilidade para o seu WhatsApp em segundos.</p>
+                      
                       <button 
-                        onClick={() => alert('Em breve! Por enquanto, salve esta página nos favoritos 📌')}
-                        className="bg-white text-purple-600 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center gap-2 mx-auto cursor-pointer"
+                        onClick={enviarDadosParaIA}
+                        disabled={loading}
+                        className={`w-full bg-white text-indigo-700 font-extrabold py-4 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-3 cursor-pointer ${loading ? 'opacity-50' : ''}`}
                       >
-                        <span className="text-xl">⬇️</span>
-                        Baixar Kit Gratuito
+                        {loading ? 'PROCESSANDO...' : '🚀 GERAR DIAGNÓSTICO IA'}
                       </button>
-                      <p className="text-xs mt-3 opacity-75">
-                        + de 5.000 produtores já baixaram
-                      </p>
                     </div>
 
                   </div>
-
                 </div>
 
-                <div className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-                  <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
-                    <span className="text-2xl">💡</span>
-                    Dicas de Precificação
-                  </h3>
-                  <ul className="grid md:grid-cols-2 gap-3 text-sm text-blue-900">
-                    <li>✅ Preços terminados em .97 convertem 23% mais</li>
-                    <li>✅ Ofereça 3 opções (aumenta ticket médio em 40%)</li>
-                    <li>✅ Kiwify tem menor taxa (economize na plataforma)</li>
-                    <li>✅ Teste A/B entre R$ X,97 e R$ X,90</li>
-                    <li>✅ Produtos acima de R$ 197 precisam de garantia</li>
-                    <li>✅ Bônus aumentam percepção de valor em 60%</li>
-                  </ul>
+                <div className="text-center mt-12 pb-8 text-gray-500 text-sm">
+                  <p>MTRIC Ecosystem | Desenvolvido por <strong>Sergio Farias</strong></p>
                 </div>
-
-                <div className="text-center mt-8 pb-8 text-gray-600 text-sm">
-                  <p>Criado por <strong>Sergio Farias</strong> para empreendedores digitais 💰</p>
-                  <p className="text-xs mt-2 opacity-75">© 2026 - Todos os direitos reservados</p>
-                </div>
-
               </div>
             </div>
           );
